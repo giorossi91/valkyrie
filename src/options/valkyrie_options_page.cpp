@@ -133,6 +133,7 @@ void ValkyrieOptionsPage::setupOptions()
    insertOptionWidget( VALKYRIE::TOOLTIP, group1, false );  // checkbox
    insertOptionWidget( VALKYRIE::ICONTXT, group1, false );  // checkbox
    insertOptionWidget( VALKYRIE::PALETTE, group1, false );  // checkbox
+   insertOptionWidget( VALKYRIE::DARK_PALETTE, group1, false );  // checkbox
    
    insertOptionWidget( VALKYRIE::FNT_GEN_SYS, group1, false );  // checkbox
    LeWidget* fontGenSysLedit = (( LeWidget* )m_itemList[VALKYRIE::FNT_GEN_SYS] );
@@ -156,6 +157,7 @@ void ValkyrieOptionsPage::setupOptions()
    grid->addWidget( m_itemList[VALKYRIE::TOOLTIP]->widget(), i++, 0, 1, 2 );
    grid->addWidget( m_itemList[VALKYRIE::ICONTXT]->widget(), i++, 0, 1, 2 );
    grid->addWidget( m_itemList[VALKYRIE::PALETTE]->widget(), i++, 0, 1, 2 );
+   grid->addWidget( m_itemList[VALKYRIE::DARK_PALETTE]->widget(), i++, 0, 1, 2 );
    grid->addWidget( fontGenSysLedit->widget(), i++, 0, 1, 4 );
    grid->addWidget( fontGenLedit->button(),    i, 0 );
    grid->addWidget( fontGenLedit->widget(),    i++, 1, 1, 3 );

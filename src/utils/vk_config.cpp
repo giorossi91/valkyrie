@@ -43,13 +43,13 @@
 /*!
   Initialise static data: Basic configuration setup
 */
-const unsigned int VkCfg::_projCfgVersion = 1;   // @@@ increment if project config keys change @@@
-const unsigned int VkCfg::_glblCfgVersion = 2;   // @@@ increment if  global config keys change @@@
+const unsigned int VkCfg::_projCfgVersion = 2;   // @@@ increment if project config keys change @@@
+const unsigned int VkCfg::_glblCfgVersion = 3;   // @@@ increment if  global config keys change @@@
 
 const QString VkCfg::_email       = "info@open-works.net"; // bug-reports
 const QString VkCfg::_copyright   = "Valkyrie is Copyright (C) 2003-2011 by OpenWorks GbR";
 const QString VkCfg::_vgCopyright = "Valgrind is Copyright (C) 2000-2010, and GNU GPL'd, by Julian Seward et al.";
-const QString VkCfg::_vgVersion   = "3.6.0";               // supports this major Vg release
+const QString VkCfg::_vgVersion   = "3.7.0";               // supports this major Vg release
 const QString VkCfg::_name        = VK_NAME;               // application name
 const QString VkCfg::_version     = VK_VERSION;            // release version
 const QString VkCfg::_package     = VK_PACKAGE;            // package name
@@ -411,6 +411,20 @@ void VkCfgGlbl::writeConfigDefaults()
    setValue( "colour_highlight",       QColor( 147,  40,  40 ) );
    setValue( "colour_null",            QColor( 239, 227, 211 ) );
    setValue( "colour_text",            QColor(   0,   0,   0 ) );
+
+   setValue( "colour_view_background", QColor( 255,  255,  255 ) );
+   setValue( "colour_view_text",       QColor(   0,    0,    0 ) );
+
+   setValue( "colour_dark_background", QColor(  22,   22,   23 ) );
+   setValue( "colour_dark_base",       QColor(  44,   44,   44 ) );
+   setValue( "colour_dark_dkgray",     QColor( 168,  171,  176 ) );
+   setValue( "colour_dark_edit",       QColor( 254,  222,  190 ) );
+   setValue( "colour_dark_highlight",  QColor( 150,  150,  150 ) );
+   setValue( "colour_dark_null",       QColor( 239,  227,  211 ) );
+   setValue( "colour_dark_text",       QColor( 230,  230,  230 ) );
+
+   setValue( "colour_dark_view_background",  QColor(  46,   47,   48 ) );
+   setValue( "colour_dark_view_text",        QColor( 227,  227,  227 ) );
 
    setValue( "recent_projects",        QString() );
    setValue( "project_path",           "./" );

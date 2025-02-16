@@ -309,3 +309,8 @@ void ToolViewStack::print( QString str ) const
    }
 #endif
 }
+
+void ToolViewStack::setStylesheet(const QString& stylesheet)
+{
+    widgetStack->setStyleSheet(stylesheet);
+}

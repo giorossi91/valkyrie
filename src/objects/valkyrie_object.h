@@ -42,6 +42,7 @@ enum vkOptId {
    // look 'n feel options
    TOOLTIP,       // show tooltips
    PALETTE,       // use valkyrie's palette
+   DARK_PALETTE,  // use dark palette
    ICONTXT,       // show toolbar text labels
    FNT_GEN_SYS,   // use system default or user-specific general-font
    FNT_GEN_USR,   // choose user-specific general-font

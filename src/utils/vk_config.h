@@ -26,6 +26,7 @@
 #include <QString>
 #include <QVariant>
 
+#include "themes/vk_theme.h"
 
 // ============================================================
 // externals
@@ -33,8 +34,6 @@ class VkCfgProj;
 class VkCfgGlbl;
 extern VkCfgProj* vkCfgProj;  // Project config
 extern VkCfgGlbl* vkCfgGlbl;  // Global (all non-project) config
-
-
 
 // ============================================================
 // namespace class only.

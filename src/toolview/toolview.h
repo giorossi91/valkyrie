@@ -125,7 +125,9 @@ public:
    
    ToolView*      currentView();     // return currently-visible view
    VGTOOL::ToolID currentToolId();   // return toolId of currently-visible view
-   
+
+    void setStylesheet(const QString& stylesheet);
+
 public slots:
    void raiseView( ToolView* tv );
    

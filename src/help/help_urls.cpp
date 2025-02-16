@@ -56,6 +56,7 @@ const char* projectFile  = "options_dialog.html#project_file";
 const char* userFontGen  = "options_dialog.html#user_font_general";
 const char* userFontTool = "options_dialog.html#user_font_tool";
 const char* palette      = "options_dialog.html#palette";
+const char* darkpalette  = "options_dialog.html#darkpalette";
 const char* srcLines     = "options_dialog.html#src_lines";
 const char* srcEditor    = "options_dialog.html#src_editor";
 const char* binary       = "options_dialog.html#binary";

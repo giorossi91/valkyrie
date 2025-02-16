@@ -27,6 +27,7 @@
 #include "options/widgets/opt_lb_widget.h"
 #include "options/widgets/opt_le_widget.h"
 #include "options/widgets/opt_sp_widget.h"
+#include "options/widgets/opt_rb_widget.h"
 #include "utils/vk_config.h"
 #include "utils/vk_messages.h"
 #include "utils/vk_utils.h"
@@ -230,9 +231,7 @@ OptionWidget* VkOptionsPage::insertOptionWidget( int optid,
       optWidget = ( OptionWidget* )new CkWidget( parent, opt, mklabel );
       break;
    case VkOPT::WDG_RADIO:
-      // TODO
-      cerr << "TODO: WDG_RADIO" << endl;
-      //      optWidget = (OptionWidget*)new RbWidget( parent, opt, mklabel );
+      optWidget = (OptionWidget*)new RbWidget( parent, opt, mklabel );
       break;
    case VkOPT::WDG_LEDIT:
       optWidget = ( OptionWidget* )new LeWidget( parent, opt, mklabel );

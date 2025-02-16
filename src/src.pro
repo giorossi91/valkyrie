@@ -65,8 +65,10 @@ SOURCES += \
     options/widgets/opt_cb_widget.cpp \
     options/widgets/opt_ck_widget.cpp \
     options/widgets/opt_le_widget.cpp \
+    options/widgets/opt_rb_widget.cpp \
     options/widgets/opt_sp_widget.cpp \
     options/widgets/opt_lb_widget.cpp \
+    themes/vk_theme.cpp \
     toolview/helgrindview.cpp \
     toolview/helgrind_logview.cpp \
     toolview/logviewfilter_mc.cpp \
@@ -108,8 +110,12 @@ HEADERS += \
     options/widgets/opt_cb_widget.h \
     options/widgets/opt_ck_widget.h \
     options/widgets/opt_le_widget.h \
+    options/widgets/opt_rb_widget.h \
     options/widgets/opt_sp_widget.h \
     options/widgets/opt_lb_widget.h \
+    themes/vk_dark_theme.h \
+    themes/vk_theme.h \
+    themes/vk_valkyrie_theme.h \
     toolview/helgrindview.h \
     toolview/helgrind_logview.h \
     toolview/logviewfilter_mc.h \

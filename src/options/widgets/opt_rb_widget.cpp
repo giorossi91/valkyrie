@@ -1,5 +1,5 @@
 /****************************************************************************
-** CbWidget implementation
+** RbWidget implementation
 ** --------------------------------------------------------------------------
 **
 ** Copyright (C) 2000-2011, OpenWorks LLP. All rights reserved.
@@ -19,11 +19,11 @@
 
 #include "help/help_context.h"
 #include "help/help_urls.h"
-#include "options/widgets/opt_cb_widget.h"
+#include "options/widgets/opt_rb_widget.h"
 #include "options/vk_option.h"
 #include "utils/vk_utils.h"
 
-#include <QComboBox>
+#include <QRadioButton>
 #include <QCompleter>
 #include <QHBoxLayout>
 #include <QWidget>
@@ -32,36 +32,22 @@
 
 /***************************************************************************/
 /*!
-    Constructs a CbWidget object
-    has-a QComboBox
+    Constructs a RbWidget object
+    has-a QRadioButton
 */
-CbWidget::CbWidget( QWidget* parent, VkOption* vkopt, bool mklabel )
+RbWidget::RbWidget( QWidget* parent, VkOption* vkopt, bool mklabel )
    : OptionWidget( parent, vkopt, mklabel )
 {
-   this->setObjectName( "cb_widget" );
+   this->setObjectName( "rb_widget" );
 
-   m_currIdx = 0;
-   m_combo   = new QComboBox( parent );   // true
-   m_widg    = m_combo;
+   m_radio   = new QRadioButton( parent );
+   m_widg    = m_radio;
    
-   m_combo->setInsertPolicy( QComboBox::NoInsert );
-   m_combo->addItems( m_opt->possValues );
-   m_combo->setCurrentIndex( m_currIdx );
-   
-   for ( int i = 0; i < m_combo->count(); i++ ) {
-      if ( m_initialValue == m_combo->itemText( i ) ) {
-         m_currIdx = i;
-         break;
-      }
-   }
-   
-   m_combo->setCurrentIndex( m_currIdx );
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-   connect( m_combo, SIGNAL( textActivated( const QString& ) ),
-#else
-   connect( m_combo, SIGNAL( activated( const QString& ) ),
-#endif
-            this,      SLOT( update( const QString& ) ) );
+   m_radio->setText(m_opt->shortHelp);
+   m_radio->setChecked( strToBool(m_initialValue) );
+
+   connect( m_radio, SIGNAL(   toggled( bool ) ),
+            this,      SLOT( rbToggled( bool ) ) );
             
    // not added if the url is empty
    ContextHelp::addHelp( m_widg, m_opt->urlAddress );
@@ -71,40 +57,39 @@ CbWidget::CbWidget( QWidget* parent, VkOption* vkopt, bool mklabel )
 /*!
     Destroys this widget, and frees any allocated resources.
 */
-CbWidget::~CbWidget()
+RbWidget::~RbWidget()
 {
-   if ( m_combo ) {
-      delete m_combo;
-      m_combo = 0;
+   if ( m_radio ) {
+      delete m_radio;
+      m_radio = 0;
    }
 }
 
 
-
-void CbWidget::update( const QString& txt )
+void RbWidget::rbToggled( bool checked )
 {
-   bool found = false;
+   setCurrValue( m_opt->possValues[ (checked ? 0 : 1) ] );
 
-   for ( int i = 0; i < m_combo->count(); ++i ) {
-      if ( txt == m_combo->itemText( i ) ) {
-         found = true;
-         m_combo->setCurrentIndex( i );
-         break;
-      }
-   }
-   
-   if ( !found ) {
-      // we didn't find the string the user typed in
-      m_combo->setCurrentIndex( m_currIdx );
-   }
-   else {
-      m_currIdx = m_combo->currentIndex();
-      setCurrValue( m_combo->currentText() );
+   // for dis/enabling associated widgets
+   emit changed( checked );
+}
+
+/*!
+  txt value translated to boolean to check box.
+  only updates if value valid 'boolean' string
+*/
+void RbWidget::update( const QString& txt )
+{
+   bool ok;
+   bool checked = strToBool( txt, &ok );
+   if ( ok ) {
+      m_radio->setChecked( checked );
+      // toggled signal sent -> calls rbToggled()
    }
 }
 
 
-QHBoxLayout* CbWidget::hlayout()
+QHBoxLayout* RbWidget::hlayout()
 {
    vk_assert( m_wLabel != 0 );
    

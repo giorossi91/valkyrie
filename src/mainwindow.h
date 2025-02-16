@@ -36,6 +36,8 @@
 #include "objects/valkyrie_object.h"
 #include "options/vk_options_dialog.h"
 #include "toolview/toolview.h"
+#include "themes/vk_dark_theme.h"
+#include "themes/vk_valkyrie_theme.h"
 
 
 // ============================================================
@@ -51,6 +53,11 @@ public:
    void removeToolMenuAction( QAction* action );
    Valkyrie* getValkyrie() {
       return valkyrie;
+   }
+
+   static const VkTheme* getTheme()
+   {
+       return currentTheme;
    }
    
 public slots:
@@ -90,7 +97,10 @@ private slots:
    void showToolTips();
    void setGenFont();
    void setToolFont();
-   void setPalette();
+
+   void setTheme(const VkTheme * const pTheme);
+   void setValkyriePalette();
+   void setDarkPalette();
    
    // functions for dealing with toolview updates
    void setLogFile( QString logFilename );
@@ -125,6 +135,9 @@ private:
    
    QToolBar* mainToolBar;
    QStatusBar* mainStatusBar;
+
+signals:
+   void themeChange(const VkTheme* const);
    
 private:
    Valkyrie*        valkyrie;
@@ -132,10 +145,15 @@ private:
    QLabel*          statusLabel;
    HandBook*        handBook;
    VkOptionsDialog* optionsDialog;
+
+   VkValkyrieTheme *valkyrieTheme;
+   VkDarkTheme     *darkTheme;
    
    bool     fShowToolTips;
    QFont    lastAppFont;
    QPalette lastPalette;
+
+   static const VkTheme *currentTheme;
 };
 
 #endif // __MAINWINDOW_H

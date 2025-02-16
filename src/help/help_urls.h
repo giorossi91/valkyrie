@@ -56,6 +56,7 @@ extern const char* projectFile;
 extern const char* userFontGen;
 extern const char* userFontTool;
 extern const char* palette;
+extern const char* darkpalette;
 extern const char* srcLines;
 extern const char* srcEditor;
 extern const char* binary;

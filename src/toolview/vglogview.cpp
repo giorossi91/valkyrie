@@ -21,6 +21,7 @@
 #include "toolview/vglogview.h"
 #include "utils/vk_utils.h"
 #include "utils/vk_config.h"
+#include "mainwindow.h"
 
 #include <QFileInfo>
 #include <QStringList>
@@ -772,12 +773,10 @@ FrameItem::FrameItem( VgOutputItem* parent, QTreeWidgetItem* after,
    isExpandable = isReadable;
 
    if ( isExpandable ) {
-      QColor col( "blue" );
-      QBrush brush( col );
+      QBrush brush( MainWindow::getTheme()->getElementColor("frame_expandable_foreground") );
       setForeground( 0, brush );
    } else {
-      QColor col( "darkred" );
-      QBrush brush( col );
+      QBrush brush( MainWindow::getTheme()->getElementColor("frame_notexpandable_foreground") );
       setForeground( 0, brush );
    }
 }
@@ -933,9 +932,8 @@ SrcItem::SrcItem( VgOutputItem* parent, QDomElement line, QString path )
    
    setText( src_lines );
 
-   // pale gray background colour.
-   QColor col( "lightgrey" );
-   QBrush brush( col );
+   // background colour.
+   QBrush brush(  MainWindow::getTheme()->getElementColor("src_item_background") );
    setBackground( 0, brush );
 }
 

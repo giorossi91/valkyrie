@@ -138,12 +138,27 @@ void Valkyrie::setupOptions()
       '\0',
       "",
       "true|false",
-      "true",
+      "false",
       "Use valkyrie's palette",
       "",
       urlValkyrie::palette,
       VkOPT::NOT_POPT,
-      VkOPT::WDG_CHECK
+      VkOPT::WDG_RADIO
+   );
+
+   options.addOpt(
+      VALKYRIE::DARK_PALETTE,
+      this->objectName(),
+      "use-dark-palette",
+      '\0',
+      "",
+      "true|false",
+      "true",
+      "Use dark palette",
+      "",
+      urlValkyrie::darkpalette,
+      VkOPT::NOT_POPT,
+      VkOPT::WDG_RADIO
    );
    
    options.addOpt(
@@ -444,6 +459,7 @@ int Valkyrie::checkOptArg( int optid, QString& argval )
    //  b) have already been checked, so no need to re-check them.
    case VALKYRIE::TOOLTIP:
    case VALKYRIE::PALETTE:
+   case VALKYRIE::DARK_PALETTE:
    case VALKYRIE::ICONTXT:
    case VALKYRIE::FNT_GEN_SYS:
    case VALKYRIE::FNT_GEN_USR:
@@ -490,6 +506,9 @@ int Valkyrie::checkOptArg( int optid, QString& argval )
                QString fname = fi.fileName();
                if ( fname.contains( QRegularExpression( "^(emacs|gedit|gvim|nano|nedit)[\\W]*" ) ) ) {
                   argval += " +%n";
+               }
+               else if ( fname.contains( QRegularExpression( "^(code)[\\W]*" ) ) ) {
+                  argval += "";
                }
                else if ( fname.contains( QRegularExpression( "^kate[\\W]*" ) ) ) {
                   argval += " --line %n -use";

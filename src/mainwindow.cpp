@@ -62,6 +62,8 @@
     \sa ToolViewStack, ToolView
 */
 
+const VkTheme *MainWindow::currentTheme{nullptr};
+
 /*!
     Constructs a MainWindow with the given parent.
 */
@@ -75,6 +77,9 @@ MainWindow::MainWindow( Valkyrie* vk )
    
    lastAppFont = qApp->font();
    lastPalette = qApp->palette();
+
+   valkyrieTheme = new VkValkyrieTheme(vkCfgGlbl);
+   darkTheme = new VkDarkTheme(vkCfgGlbl);
    
    QIcon icon_vk;
    icon_vk.addPixmap( QPixmap( QString::fromUtf8( ":/vk_icons/icons/valkyrie.xpm" ) ) );
@@ -102,13 +107,17 @@ MainWindow::MainWindow( Valkyrie* vk )
    opt = valkyrie->getOption( VALKYRIE::FNT_TOOL_USR );
    connect( opt, SIGNAL( valueChanged() ), this, SLOT( setToolFont() ) );
    opt = valkyrie->getOption( VALKYRIE::PALETTE );
-   connect( opt, SIGNAL( valueChanged() ), this, SLOT( setPalette() ) );
-   
+   connect( opt, SIGNAL( valueChanged() ), this, SLOT( setValkyriePalette() ) );
+   opt = valkyrie->getOption( VALKYRIE::DARK_PALETTE );
+   connect( opt, SIGNAL( valueChanged() ), this, SLOT( setDarkPalette() ) );
+
+   connect( this, SIGNAL( themeChange(VkTheme*const) ), this, SLOT( setTheme(VkTheme*const) ) );
+
    showLabels();
    showToolTips();
    setGenFont();
    setToolFont();
-   setPalette();
+   setDarkPalette(); //default palette
    
    updateEventFilters( this );
    updateEventFilters( handBook );
@@ -135,6 +144,9 @@ MainWindow::~MainWindow()
    vkCfgGlbl->setValue( "mainwindow_pos", pos() );
    vkCfgGlbl->sync();
    
+   delete darkTheme;
+   delete valkyrieTheme;
+
    // handbook has no parent, so have to delete it.
    delete handBook;
    handBook = 0;
@@ -672,68 +684,73 @@ void MainWindow::setToolFont()
    }
 }
 
-void MainWindow::setPalette()
+void MainWindow::setDarkPalette()
 {
-   QPalette pal;
-   VkOption* opt = valkyrie->getOption( VALKYRIE::PALETTE );
-   bool useVkPalette = vkCfgProj->value( opt->configKey() ).toBool();
-   
-   if ( !useVkPalette ) {
-      pal = lastPalette;
-   }
-   else {
-      lastPalette = qApp->palette();
-      
-      QColor bg     = vkCfgGlbl->value( "colour_background" ).value<QColor>();
-      QColor base   = vkCfgGlbl->value( "colour_base"       ).value<QColor>();
-      QColor text   = vkCfgGlbl->value( "colour_text"       ).value<QColor>();
-      QColor dkgray = vkCfgGlbl->value( "colour_dkgray"     ).value<QColor>();
-      QColor hilite = vkCfgGlbl->value( "colour_highlight"  ).value<QColor>();
-      
-      // anything not ok -> return default qApp palette:
-      if ( bg.isValid() && base.isValid() && text.isValid() &&
-           dkgray.isValid() && hilite.isValid() ) {
+    emit themeChange(darkTheme);
+}
+
+void MainWindow::setValkyriePalette()
+{
+    emit themeChange(valkyrieTheme);
+}
+
+void MainWindow::setTheme(const VkTheme * const pTheme)
+{
+    assert (nullptr != pTheme);
+
+    currentTheme = pTheme;
+
+    lastPalette = qApp->palette();
+
+    QColor bg             = pTheme->getElementColor( "colour_background"      );
+    QColor base           = pTheme->getElementColor( "colour_base"            );
+    QColor text           = pTheme->getElementColor( "colour_text"            );
+    QColor dkgray         = pTheme->getElementColor( "colour_dkgray"          );
+    QColor hilite         = pTheme->getElementColor( "colour_highlight"       );
+    QColor viewBackground = pTheme->getElementColor( "colour_view_background" );
+    QColor viewText       = pTheme->getElementColor( "colour_view_text"       );
            
-         pal = QPalette( bg, bg );
-         // 3 colour groups: active, inactive, disabled
-         // bg colour for text entry widgets
-         pal.setColor( QPalette::Active,   QPalette::Base, base );
-         pal.setColor( QPalette::Inactive, QPalette::Base, base );
-         pal.setColor( QPalette::Disabled, QPalette::Base, base );
-         // general bg colour
-         pal.setColor( QPalette::Active,   QPalette::Window, bg );
-         pal.setColor( QPalette::Inactive, QPalette::Window, bg );
-         pal.setColor( QPalette::Disabled, QPalette::Window, bg );
-         // same as bg
-         pal.setColor( QPalette::Active,   QPalette::Button, bg );
-         pal.setColor( QPalette::Inactive, QPalette::Button, bg );
-         pal.setColor( QPalette::Disabled, QPalette::Button, bg );
-         // general fg colour - same as Text
-         pal.setColor( QPalette::Active,   QPalette::WindowText, text );
-         pal.setColor( QPalette::Inactive, QPalette::WindowText, text );
-         pal.setColor( QPalette::Disabled, QPalette::WindowText, dkgray );
-         // same as fg
-         pal.setColor( QPalette::Active,   QPalette::Text, text );
-         pal.setColor( QPalette::Inactive, QPalette::Text, text );
-         pal.setColor( QPalette::Disabled, QPalette::Text, dkgray );
-         // same as text and fg
-         pal.setColor( QPalette::Active,   QPalette::ButtonText, text );
-         pal.setColor( QPalette::Inactive, QPalette::ButtonText, text );
-         pal.setColor( QPalette::Disabled, QPalette::ButtonText, dkgray );
-         // highlight
-         pal.setColor( QPalette::Active,   QPalette::Highlight, hilite );
-         pal.setColor( QPalette::Inactive, QPalette::Highlight, hilite );
-         pal.setColor( QPalette::Disabled, QPalette::Highlight, hilite );
-         // contrast with highlight
-         pal.setColor( QPalette::Active,   QPalette::HighlightedText, base );
-         pal.setColor( QPalette::Inactive, QPalette::HighlightedText, base );
-         pal.setColor( QPalette::Disabled, QPalette::HighlightedText, base );
-      }
-   }
-   
-   if ( qApp->palette() != pal ) {
-      qApp->setPalette( pal );
-   }
+    QPalette pal = QPalette( bg, bg );
+    // 3 colour groups: active, inactive, disabled
+    // bg colour for text entry widgets
+    pal.setColor( QPalette::Active,   QPalette::Base, base );
+    pal.setColor( QPalette::Inactive, QPalette::Base, base );
+    pal.setColor( QPalette::Disabled, QPalette::Base, base );
+    // general bg colour
+    pal.setColor( QPalette::Active,   QPalette::Window, bg );
+    pal.setColor( QPalette::Inactive, QPalette::Window, bg );
+    pal.setColor( QPalette::Disabled, QPalette::Window, bg );
+    // same as bg
+    pal.setColor( QPalette::Active,   QPalette::Button, bg );
+    pal.setColor( QPalette::Inactive, QPalette::Button, bg );
+    pal.setColor( QPalette::Disabled, QPalette::Button, bg );
+    // general fg colour - same as Text
+    pal.setColor( QPalette::Active,   QPalette::WindowText, text );
+    pal.setColor( QPalette::Inactive, QPalette::WindowText, text );
+    pal.setColor( QPalette::Disabled, QPalette::WindowText, dkgray );
+    // same as fg
+    pal.setColor( QPalette::Active,   QPalette::Text, text );
+    pal.setColor( QPalette::Inactive, QPalette::Text, text );
+    pal.setColor( QPalette::Disabled, QPalette::Text, dkgray );
+    // same as text and fg
+    pal.setColor( QPalette::Active,   QPalette::ButtonText, text );
+    pal.setColor( QPalette::Inactive, QPalette::ButtonText, text );
+    pal.setColor( QPalette::Disabled, QPalette::ButtonText, dkgray );
+    // highlight
+    pal.setColor( QPalette::Active,   QPalette::Highlight, hilite );
+    pal.setColor( QPalette::Inactive, QPalette::Highlight, hilite );
+    pal.setColor( QPalette::Disabled, QPalette::Highlight, hilite );
+    // contrast with highlight
+    pal.setColor( QPalette::Active,   QPalette::HighlightedText, base );
+    pal.setColor( QPalette::Inactive, QPalette::HighlightedText, base );
+    pal.setColor( QPalette::Disabled, QPalette::HighlightedText, base );
+
+    toolViewStack->setStyleSheet("background-color:" + viewBackground.name(QColor::HexRgb) + ";color:"+viewText.name(QColor::HexRgb)+";");
+
+    if ( qApp->palette() != pal )
+    {
+        qApp->setPalette( pal );
+    }
 }
 
 

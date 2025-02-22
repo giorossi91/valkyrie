@@ -17,12 +17,16 @@ jobs:
         run: |
           apt-get update
           apt-get install -y qt5-default qtdeclarative5-dev cmake
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-      - name: Checkout code
-        uses: actions/checkout@v4.2.0
+      - name: Install dependencies
+        run: npm install
+      - name: Run build
+        run: npm run build
       - name: configure
         run: qmake PREFIX=/usr
       - name: build

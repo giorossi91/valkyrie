@@ -31,7 +31,7 @@ jobs:
       - name: pack
         run: |
           sudo make install DESTDIR=AppDir
-          export UPDATE_INFO="gh-releases-zsync|AppImageCrafters|valkyrie|latest|*.AppImage.zsync"
+          export export UPDATE_INFO="gh-releases-zsync|AppImageCrafters|valkyrie|latest|*.AppImage.zsync"
           sudo appimage-builder --skip-test
       - name: Create Release
         id: create_release

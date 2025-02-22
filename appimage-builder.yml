@@ -1,0 +1,30 @@
+version: 1
+
+AppDir:
+  path: ./build/AppDir
+  app_info:
+    id: valkyrie
+    name: Valkyrie
+    version: 2.0.2
+    exec: valkyrie
+    exec_args: $@
+  apt:
+    arch: amd64
+    sources:
+      - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ focal main universe'
+    include:
+      - qt5-default
+      - libqt5widgets5
+      - libqt5gui5
+      - libqt5core5a
+      - libfuse2
+  files:
+    include:
+      - build/vakyrie
+      - icons.qrc
+      - icons/
+
+AppImage:
+  arch: x86_64
+  update-information: None
+  sign-key: None

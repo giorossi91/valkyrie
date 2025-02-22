@@ -17,11 +17,11 @@ jobs:
       - name: install dependencies
         run: |
           sudo apt-get update
-          sudo add-apt-repository ppa:appimage-convert/appimage
-          sudo apt-get update
           sudo apt-get install -y libfuse2
           sudo apt-get install -y patchelf software-properties-common
-          sudo apt-get install -y appimage-builder
+          wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+          chmod +x appimage-builder-x86_64.AppImage
+          sudo mv appimage-builder-x86_64.AppImage /usr/local/bin/appimage-builder
       - name: Checkout code
         uses: actions/checkout@v4
       - name: configure

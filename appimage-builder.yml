@@ -11,7 +11,7 @@ AppDir:
     exec_args: $@
   files:
     include:
-      - build/valkyrie
+      - ./build/valkyrie
 
 AppImage:
   arch: x86_64
@@ -22,7 +22,7 @@ RPM:
   name: Valkyrie
   version: 1.0.0
   release: 1
-  summary: Valkyrie is a GPL graphical front-end to the Valgrind suite
+  summary: Valkyrie is a graphical front-end to the Valgrind suite
   license: GPLv2
   files:
     - ./build/valkyrie:/usr/local/bin/valkyrie

@@ -17,19 +17,6 @@ jobs:
         qt-config:
           - version: '5.15.*'
             arch: gcc_64
-          - version: '5.13.*'
-            arch: gcc_64
-          - version: '5.9.*'
-            arch: gcc_64
-          - version: '6.*'
-            arch: linux_gcc_64
-            modules: qt5compat
-          - version: '6.5.*'
-            arch: gcc_64
-            modules: qt5compat
-          - version: '6.2.*'
-            arch: gcc_64
-            modules: qt5compat
     steps:
       - id: install_qt
         name: Install Qt using GHA

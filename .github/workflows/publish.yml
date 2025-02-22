@@ -10,23 +10,16 @@ jobs:
   build:
     name: Upload Release Asset
     runs-on: ubuntu-latest
-    container:
-      image: appimagecrafters/appimage-builder
     steps:
       - name: install dependencies
         run: |
           apt-get update
           apt-get install -y qt5-default qtdeclarative5-dev cmake
+          wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+          chmod +x linuxdeployqt-continuous-x86_64.AppImage
+          mv linuxdeployqt-continuous-x86_64.AppImage appimage-builder
       - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        run: npm install
-      - name: Run build
-        run: npm run build
+        uses: actions/checkout@v4
       - name: configure
         run: qmake PREFIX=/usr
       - name: build

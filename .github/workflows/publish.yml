@@ -11,10 +11,12 @@ jobs:
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
+      - id: install_qt
+        name: Install Qt using GHA
+        uses: jurplel/install-qt-action@v4
       - name: install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y qt5-default qtdeclarative5-dev cmake
           sudo apt-get install -y libfuse2
           sudo apt-get install -y python3-pip patchelf
           pip3 install appimage-builder

@@ -1,30 +1,34 @@
 version: 1
 
 AppDir:
-  path: ./build/AppDir
+  path: ./AppDir
   app_info:
     id: valkyrie
     name: Valkyrie
-    version: 2.0.2
+    icon: icons/valkyrie.xpm
+    version: 1.0.0
     exec: valkyrie
     exec_args: $@
-  apt:
-    arch: amd64
-    sources:
-      - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ focal main universe'
-    include:
-      - qt5-default
-      - libqt5widgets5
-      - libqt5gui5
-      - libqt5core5a
-      - libfuse2
   files:
     include:
-      - build/vakyrie
-      - icons.qrc
-      - icons/
+      - build/valkyrie
 
 AppImage:
   arch: x86_64
   update-information: None
   sign-key: None
+
+RPM:
+  name: Valkyrie
+  version: 1.0.0
+  release: 1
+  summary: Valkyrie is a GPL graphical front-end to the Valgrind suite
+  license: GPLv2
+  files:
+    - ./build/valkyrie:/usr/local/bin/valkyrie
+  dependencies:
+    - qt5-default
+    - libqt5widgets5
+    - libqt5gui5
+    - libqt5core5a
+    - libfuse2

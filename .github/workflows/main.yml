@@ -1,0 +1,64 @@
+name: Build and Deploy Valkyrie
+
+on:
+  push:
+    branches:
+      - main
+      - valkyrie-qt5-qt6
+  pull_request:
+    branches:
+      - main
+      - valkyrie-qt5-qt6
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Qt 5.15.2
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: '5.15.2'
+        host: 'linux'
+        target: 'desktop'
+        arch: 'gcc_64'
+
+    - name: Set up Qt environment
+      run: source $HOME/Qt/5.15.2/gcc_64/bin/qt5_env.sh
+
+    - name: Build application
+      run: |
+        mkdir build
+        cd build
+        qmake ..
+        make
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: qt-application
+        path: build/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: qt-application
+        path: build/
+
+    - name: Deploy to GitHub Releases
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build/**/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}

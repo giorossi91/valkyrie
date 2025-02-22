@@ -43,29 +43,26 @@ jobs:
           
   get_latest_tag:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
-
+      uses: actions/checkout@v4
     - name: Get latest tag
       id: get_tag
-      run: echo ::set-output name=tag::$(git describe --tags `git rev-list --tags --max-count=1`)
+      run: |
+        latest_tag=$(git tag --sort=-creatordate | head -n 1)
+        echo ::set-output name=tag::${latest_tag}
       
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
-
+      uses: actions/checkout@v4
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
         name: qt-application
         path: build/
-
     - name: Deploy to GitHub Releases
       uses: softprops/action-gh-release@v1
       with:

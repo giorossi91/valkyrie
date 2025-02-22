@@ -29,9 +29,11 @@ jobs:
       - name: build
         run: make -j`nproc`
       - name: pack
+        env:
+          UPDATE_INFO: gh-releases-zsync|AppImageCrafters|valkyrie|latest|*x86_64.AppImage.zsync
         run: |
           sudo make install DESTDIR=AppDir
-          sudo appimage-builder --skip-test --recipe AppImageBuilder.yml
+          sudo appimage-builder --skip-test
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

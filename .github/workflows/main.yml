@@ -23,7 +23,8 @@ jobs:
         name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libfuse2
+          sudo apt-get install -y python3-pip patchelf
+          pip3 install appimage-builder
       - id: install_qt
         name: Install Qt using GHA
         uses: jurplel/install-qt-action@v4
@@ -32,11 +33,6 @@ jobs:
           version: ${{ matrix.qt-config.version }}
           modules: ${{ matrix.qt-config.modules }}
       - uses: actions/checkout@v4
-      - id: install_linuxdeployqt
-        name: Install linuxdeployqt
-        run: | 
-          wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-          chmod +x linuxdeployqt-continuous-x86_64.AppImage
       - id: compile_application
         name: Build application
         run: |
@@ -44,10 +40,10 @@ jobs:
           cd build
           qmake ..
           make  -j$(nproc)
-      - id: exec_linuxdeployqt
-        name: Deploy application with Qt libraries
+      - id: exec_appimagebuilder
+        name: Create App Image
         run: |
-          ./linuxdeployqt-continuous-x86_64.AppImage build/valkyrie -bundle-non-qt-libs
+           appimage-builder --recipe appimage-builder.yml
       - id: upload-artifact
         name: Upload artifact
         uses: actions/upload-artifact@v4

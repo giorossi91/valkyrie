@@ -15,12 +15,14 @@ jobs:
       image: appimagecrafters/appimage-builder
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
       - name: install dependencies
         run: |
           apt-get update
           apt-get install -y qt5-default qtdeclarative5-dev cmake
+          apt-get remove nodejs
+          nvm install 16.15.1
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: configure
         run: qmake PREFIX=/usr
       - name: build

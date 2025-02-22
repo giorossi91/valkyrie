@@ -23,8 +23,8 @@ jobs:
         name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip patchelf
-          pip3 install appimage-builder
+          sudo apt-get install -y python3-pip patchelf rpm
+          pip3 install appimage-builder fpm
       - id: install_qt
         name: Install Qt using GHA
         uses: jurplel/install-qt-action@v4
@@ -44,23 +44,16 @@ jobs:
         name: Create App Image
         run: |
            appimage-builder --recipe appimage-builder.yml
+      - id: exec_rpm
+        name: Create RPM
+        run: |
+          fpm -s dir -t rpm -n your_application -v 1.0.0 --prefix /usr/local build/AppDir=/
       - id: upload-artifact
         name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: qt-application
           path: build/
-          
-  get_latest_tag:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Get latest tag
-      id: get_tag
-      run:  |
-        latest_tag=$(git tag --sort=-creatordate | head -n 1)
-        echo "latest_tag=$latest_tag" >> $GITHUB_ENV
   deploy:
     needs: build
     runs-on: ubuntu-latest

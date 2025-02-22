@@ -1,5 +1,4 @@
 name: Build and Deploy Valkyrie
-
 on:
   push:
     branches:
@@ -10,38 +9,37 @@ on:
     branches:
       - main
       - valkyrie-qt5-qt6
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        qt-config:
+          - version: '5.15.*'
+            arch: gcc_64
+            modules:
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Install Qt 5.15.2
-      uses: jurplel/install-qt-action@v2
-      with:
-        version: '5.15.2'
-        host: 'linux'
-        target: 'desktop'
-        arch: 'gcc_64'
-
-    - name: Set up Qt environment
-      run: source $HOME/Qt/5.15.2/gcc_64/bin/qt5_env.sh
-
-    - name: Build application
-      run: |
-        mkdir build
-        cd build
-        qmake ..
-        make
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: qt-application
-        path: build/
+      - id: install_qt
+        name: Install Qt using GHA
+        uses: jurplel/install-qt-action@v4
+        with:
+          arch: ${{ matrix.qt-config.arch }}
+          version: ${{ matrix.qt-config.version }}
+          modules: ${{ matrix.qt-config.modules }}
+      - uses: actions/checkout@v4
+      - id: compile_application
+        name: Build application
+        run: |
+          mkdir build
+          cd build
+          qmake ..
+          make  -j$(nproc)
+      - id: upload-artifact
+        name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qt-application
+          path: build/
 
   deploy:
     needs: build

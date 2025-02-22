@@ -28,9 +28,9 @@ jobs:
         run: make -j`nproc`
       - name: pack
         run: |
-          make install DESTDIR=AppDir
-          export export UPDATE_INFO="gh-releases-zsync|AppImageCrafters|valkyrie|latest|*.AppImage.zsync"
-          appimage-builder --skip-test
+          sudo make install DESTDIR=AppDir
+          export UPDATE_INFO="gh-releases-zsync|AppImageCrafters|valkyrie|latest|*.AppImage.zsync"
+          sudo appimage-builder --skip-test
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

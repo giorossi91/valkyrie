@@ -6,6 +6,7 @@ AppDir:
     name: Valkyrie
     version: latest
     exec: usr/bin/valkyrie
+    icon: usr/share/doc/valkyrie-2.0.1.SVN/images/valkyrie.png
     exec_args: $@
   apt:
     arch: amd64

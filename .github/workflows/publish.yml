@@ -28,12 +28,12 @@ jobs:
         run: qmake PREFIX=/usr
       - name: build
         run: make -j`nproc`
-      - name: pack
+      - name: Build AppImage
+        uses: AppImageCrafters/build-appimage-action@master
         env:
           UPDATE_INFO: gh-releases-zsync|AppImageCrafters|valkyrie|latest|*x86_64.AppImage.zsync
-        run: |
-          sudo make install DESTDIR=AppDir
-          sudo appimage-builder --skip-test --recipe AppImageBuilder.yml
+        with:
+          recipe: AppImageBuilder.yml
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

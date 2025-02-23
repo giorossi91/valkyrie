@@ -24,10 +24,10 @@ jobs:
           sudo mv appimage-builder-x86_64.AppImage /usr/local/bin/appimage-builder
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: configure
+      - name: Configure
         run: qmake PREFIX=/usr
-      - name: build
-        run: make -j`nproc` install DESTDIR=AppDir
+      - name: Build
+        run: sudo make -j`nproc` install DESTDIR=AppDir
       - name: Build AppImage
         uses: AppImageCrafters/build-appimage-action@master
         env:

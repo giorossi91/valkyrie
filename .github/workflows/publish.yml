@@ -27,7 +27,7 @@ jobs:
       - name: configure
         run: qmake PREFIX=/usr
       - name: build
-        run: make -j`nproc`
+        run: make -j`nproc` install DESTDIR=AppDir
       - name: Build AppImage
         uses: AppImageCrafters/build-appimage-action@master
         env:

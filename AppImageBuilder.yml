@@ -20,6 +20,7 @@ AppDir:
     - sourceline: deb http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse
     - sourceline: deb http://archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse
     - sourceline: deb http://archive.neon.kde.org/user/ bionic main
+    - sourceline: deb https://ppa.launchpadcontent.net/beineri/opt-qt-5.15.0-focal/ubuntu focal main 
       key_url: 'https://archive.neon.kde.org/public.key'
     include:
     - libbz2-1.0
@@ -58,12 +59,13 @@ AppDir:
     - liblz4-1
     - libpciaccess0
     - libpcre3
-    - qt5-default
-    - libqt5quickcontrols2-5
-    - libqt5quicktemplates2-5
-    - libqt5svg5
-    - libqt5texttospeech5
-    - libqt5x11extras5
+    - qt515base
+    - qt515svg
+    - qt515declarative
+    - qt515quickcontrols
+    - qt515quickcontrols2
+    - qt515x11extras
+    - qt515scxml
     - libsm6
     - libsystemd0
     - libxau6

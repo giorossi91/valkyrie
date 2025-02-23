@@ -17,7 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Configure
-        run: qmake PREFIX=/usr
+        run:  |
+          mkdir -p $GITHUB_WORKSPACE/AppDir/usr
+          qmake PREFIX=$GITHUB_WORKSPACE/AppDir/usr
       - name: Build
         run: | 
           make -j`nproc` install DESTDIR=$GITHUB_WORKSPACE/AppDir

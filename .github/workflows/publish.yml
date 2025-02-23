@@ -17,12 +17,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Configure
-        run:  |
+        run: | 
           mkdir -p $GITHUB_WORKSPACE/AppDir/usr
           qmake PREFIX=$GITHUB_WORKSPACE/AppDir/usr
       - name: Build
         run: | 
           make -j`nproc` install DESTDIR=$GITHUB_WORKSPACE/AppDir
+          mkdir -p $GITHUB_WORKSPACE/AppDir/usr/share/icons/hicolor/256x256/apps
+          cp -f $GITHUB_WORKSPACE/icons/valyrie.png $GITHUB_WORKSPACE/AppDir/usr/share/icons/hicolor/256x256/apps
       - name: Build AppImage
         uses: AppImageCrafters/build-appimage-action@master
         env:

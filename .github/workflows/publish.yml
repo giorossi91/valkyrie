@@ -27,7 +27,10 @@ jobs:
       - name: Configure
         run: qmake PREFIX=/usr
       - name: Build
-        run: sudo make -j`nproc` install DESTDIR=AppDir
+        run: | 
+          sudo make -j`nproc` install DESTDIR=AppDir
+          sudo mkdir -p /github/workspace/AppDir/usr/bin/
+          sudo cp -f /usr/bin/valkyrie /github/workspace/AppDir/usr/bin/valkyrie
       - name: Build AppImage
         uses: AppImageCrafters/build-appimage-action@master
         env:

@@ -381,8 +381,16 @@ void MemcheckView::launchEditor( QTreeWidgetItem* item )
       for (; it != lineargs.end(); ++it ) {
          args.removeAll( *it );
       }
+
+      // remove any arg with "%f" in it
+      lineargs = args.filter(".*%f.*");
+      it = lineargs.begin();
+      for (; it != lineargs.end(); ++it ) {
+         args.removeAll( *it );
+      }
    } else {
       args.replaceInStrings( "%n", line.text() );
+      args.replaceInStrings( "%f", path );
    }
    args << path;
 

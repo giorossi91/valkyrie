@@ -17,6 +17,9 @@ MOC_DIR       = moc
 OBJECTS_DIR   = obj
 DESTDIR       = $${VK_ROOT}/bin
 
+QMAKE_CXXFLAGS += "-fno-sized-deallocation"
+CONFIG += c++14
+
 
 ######################################################################
 # Install directives

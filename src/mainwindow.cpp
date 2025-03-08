@@ -696,7 +696,7 @@ void MainWindow::setValkyriePalette()
 
 void MainWindow::setTheme(const VkTheme * const pTheme)
 {
-    assert (nullptr != pTheme);
+    vk_assert (nullptr != pTheme);
 
     currentTheme = pTheme;
 

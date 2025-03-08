@@ -508,7 +508,7 @@ int Valkyrie::checkOptArg( int optid, QString& argval )
                   argval += " +%n";
                }
                else if ( fname.contains( QRegularExpression( "^(code)[\\W]*" ) ) ) {
-                  argval += "";
+                  argval += " --goto %f:%n";
                }
                else if ( fname.contains( QRegularExpression( "^kate[\\W]*" ) ) ) {
                   argval += " --line %n -use";

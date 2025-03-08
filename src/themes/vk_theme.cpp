@@ -18,6 +18,7 @@
 ****************************************************************************/
 
 #include "themes/vk_theme.h"
+#include "utils/vk_utils.h"
 
 VkTheme::VkTheme()
 {
@@ -30,7 +31,7 @@ VkTheme::~VkTheme()
 
 void VkTheme::addElementColor(const QString &key, const QColor& color)
 {
-    assert(color.isValid());
+    vk_assert(color.isValid());
 
     m_colorMap[key] = color;
 }

@@ -6,7 +6,7 @@
 ######################################################################
 
 NAME    = valkyrie
-VERSION = 2.0.1.SVN
+VERSION = 2.0.2
 PACKAGE = $$NAME-$$VERSION
 
 ######################################################################
@@ -42,5 +42,5 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x000000
 CONFIG           += qt
 CONFIG           += warn_on     # compiler should issue max warnings
 CONFIG           += silent      # make --quiet
-#CONFIG           += release     # release/debug
-CONFIG           += debug       # release/debug
+CONFIG           += release     # release/debug
+#CONFIG           += debug       # release/debug

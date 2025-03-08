@@ -1,0 +1,41 @@
+on:
+  push:
+    branches:
+      - valkyrie-qt5-qt6
+      - test-workflow
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Upload Release Asset
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - id: install_qt
+        name: Install Qt using GHA
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '5.9.5'
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Configure
+        run: | 
+          mkdir -p $GITHUB_WORKSPACE/AppDir/usr
+          qmake PREFIX=$GITHUB_WORKSPACE/AppDir/usr
+      - name: Build
+        run: | 
+          make -j`nproc` install DESTDIR=$GITHUB_WORKSPACE/AppDir
+          mkdir -p $GITHUB_WORKSPACE/AppDir/usr/share/icons/hicolor/256x256/apps
+          cp -f $GITHUB_WORKSPACE/icons/valkyrie.png $GITHUB_WORKSPACE/AppDir/usr/share/icons/hicolor/256x256/apps
+      - name: Build AppImage
+        uses: AppImageCrafters/build-appimage-action@master
+        env:
+          UPDATE_INFO: gh-releases-zsync|AppImageCrafters|valkyrie|latest|*x86_64.AppImage.zsync
+        with:
+          recipe: AppImageBuilder.yml
+      - name: Download artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: valkyrie-AppImage
+          path: ./*.AppImage
